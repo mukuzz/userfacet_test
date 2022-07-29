@@ -15,6 +15,15 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# read the teacher availability file
+import json
+try:
+    with open('teacher_availability.json', 'r') as file:
+        TEACHER_AVAILABILITY = json.load(file)
+except IOError as e:
+    print("teacher_availability.json file not found at project root")
+    exit()
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -107,7 +116,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
