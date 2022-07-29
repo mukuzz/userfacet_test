@@ -30,11 +30,12 @@ class BookClass(View):
 
     def get_next_available_class(self, booking_data):
         try:
-            last_booking = Booking.objects.filter(date__gte=timezone.now()).order_by('-start_time')[0]
+            last_booking = Booking.objects.filter(date__gte=timezone.now().replace(hour=0, minute=0, second=0)).order_by('-start_time')[0]
             next_booking_time = last_booking.date + timezone.timedelta(days=7)
         except IndexError:
             next_booking_time = timezone.now()
-            while(next_booking_time.strftime('%A') != booking_data['weekday']):
+            while(next_booking_time.strftime('%A') != booking_data['weekday'] or \
+                next_booking_time < timezone.now()):
                 next_booking_time = next_booking_time + timezone.timedelta(days=1)
         return next_booking_time
 
