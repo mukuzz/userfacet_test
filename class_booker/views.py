@@ -30,8 +30,8 @@ class BookClass(View):
 
     def get_next_available_class(self, booking_data):
         try:
-            last_booking = Booking.objects.filter(start_time__gte=timezone.now()).order_by('-start_time')[0]
-            next_booking_time = last_booking.start_time + timezone.timedelta(days=7)
+            last_booking = Booking.objects.filter(date__gte=timezone.now()).order_by('-start_time')[0]
+            next_booking_time = last_booking.date + timezone.timedelta(days=7)
         except IndexError:
             next_booking_time = timezone.now()
             while(next_booking_time.strftime('%A') != booking_data['weekday']):
@@ -52,6 +52,15 @@ class BookClass(View):
     def book_slot(self, booking_data):
         if (self.check_slot_exists(booking_data)):
             next_avl_cls_date = self.get_next_available_class(booking_data)
+            Booking.objects.create(
+                date = next_avl_cls_date,
+                start_time = booking_data["start_time"],
+                end_time = booking_data["end_time"],
+                teacher_full_name = teacher_availability['full_name'],
+                teacher_email = teacher_availability['email'],
+                student_full_name = booking_data['full_name'],
+                student_email = booking_data['email_address']
+            )
             self.send_email_to_student(booking_data, next_avl_cls_date)
             return JsonResponse({
                 "slot_confirmed": True,

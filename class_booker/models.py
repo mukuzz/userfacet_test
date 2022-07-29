@@ -4,8 +4,9 @@ from django.utils import timezone
 
 
 class Booking(models.Model):
-    start_time = models.DateTimeField(default=timezone.now)
-    end_time = models.DateTimeField(default=timezone.now)
+    date = models.DateField(default=timezone.now)
+    start_time = models.CharField(max_length=10)
+    end_time = models.CharField(max_length=10)
     teacher_full_name = models.CharField(max_length=256)
     teacher_email = models.EmailField(max_length=256)
     student_full_name = models.CharField(max_length=256)
