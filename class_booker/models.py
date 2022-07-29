@@ -11,6 +11,3 @@ class Booking(models.Model):
     teacher_email = models.EmailField(max_length=256)
     student_full_name = models.CharField(max_length=256)
     student_email = models.EmailField(max_length=256)
-
-    class Meta:
-        unique_together = (("date", "start_time", "end_time", "teacher_full_name"),)
